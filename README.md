@@ -34,7 +34,7 @@ npm run dev
 npm run build
 ```
 
-### Run E2E test
+### E2E test
 
 ```
 npx cypress open
