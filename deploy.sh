@@ -8,7 +8,7 @@ cd dist
 
 git init
 git add -A
-git commit -m 'new deployment'
-git push -f git@github.com:barantoro/koro.git master:gh-pages
+git commit -m 'new deployment:get single post fix:4'
+git push -f git@github.com:barantoro/koro.git main:gh-pages
 
 cd -

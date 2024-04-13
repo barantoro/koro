@@ -12,6 +12,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.3.0",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@fred78290/vue3-content-placeholders": "^1.0.1",
     "@headlessui/vue": "^1.7.19",
     "@heroicons/vue": "^2.1.3",
     "axios": "^1.6.8",

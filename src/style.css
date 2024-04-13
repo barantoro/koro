@@ -188,6 +188,14 @@ input[type="checkbox"]:checked::before {
 .br-8 {
   border-radius: 8px;
 }
+
+.vue3-content-placeholders-text__line {
+  width: 100% !important;
+}
+
+.op-5 {
+  opacity: .5;
+}
  
 
 .table-wrapper {

@@ -52,6 +52,8 @@ npx cypress open
 
 - **SweetAlert2**: SweetAlert2 is included for its customizable and user-friendly alert modals, improving the overall user experience by providing visually appealing feedback to users.
 
+- **Vue Content Placeholders**: Vue Content Placeholders is integrated into the project to enhance the user experience by providing placeholder loading animations for content while data is being fetched from the server.
+
 ## Additional Technologies Used
 
 - **Cypress**: Cypress is integrated into the project for end-to-end testing. It provides a powerful and intuitive testing framework for ensuring the reliability and functionality of the application.

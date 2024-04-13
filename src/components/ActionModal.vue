@@ -12,9 +12,9 @@
                   <XMarkIcon @click="$emit('close-modal')" class="close-icon" tabindex="0" aria-label="Close modal"/>
                 </div>
               </div>
-
+              
               <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }">
-                <div class="modal-body mt-2">
+                <div class="modal-body mt-2" v-if="!loader">
                   <div>
                     <label for="title">Title *</label>
                     <Field name="title" type="text" class="input mt-2" v-model="post.title" aria-labelledby="title" :class="{ 'error-input': errors.title }" />
@@ -23,8 +23,8 @@
 
                   <div class="mt-2">
                     <label for="authors">Author *</label>
-                    <Field name="userId" as="select" class="select mt-2" :class="{ 'error-input': errors.userId }" v-model="post.userId" aria-labelledby="authors">
-                        <option value="">Please Select</option>
+                    <Field name="userId" as="select" class="select mt-2" :class="{ 'error-input': errors.userId }" v-model="post.userId" aria-labelledby="authors" >
+                        <option value="">Please select</option>
                         <option 
                           :value="author.id" 
                           v-for="author in authors" 
@@ -38,14 +38,27 @@
 
                   <div class="mt-4">
                     <label for="description">Description</label>
-                    <!-- <div class="mt-2 br-8" :class="{ 'error-input': errors.body }">
-                      <Field name="body">
-                        <ckeditor :editor="editor" v-model="post.body" :config="editorConfig" aria-labelledby="postBody"></ckeditor>
-                      </Field>
-                      <span class="error-msg">{{errors.body}}</span>
-                    </div> -->
                     <div class="mt-2 br-8">
                       <ckeditor :editor="editor" v-model="post.body" :config="editorConfig" aria-labelledby="postBody"></ckeditor>
+                    </div>
+                  </div>  
+                </div>
+
+                <div class="modal-body mt-2" v-else>
+                  <div>
+                    <label for="title">Title *</label>
+                    <ContentPlaceholder class="mt-2" :textLine="1" />
+                  </div>
+
+                  <div class="mt-2">
+                    <label for="authors">Author *</label>
+                    <ContentPlaceholder class="mt-2" :textLine="1" />
+                  </div>
+
+                  <div class="mt-4">
+                    <label for="description">Description</label>
+                    <div class="mt-2 br-8">
+                      <ContentPlaceholder class="mt-2" :textLine="10" />
                     </div>
                   </div>  
                 </div>
@@ -54,7 +67,7 @@
                   <button @click="$emit('close-modal')" aria-label="Close modal">
                     Close
                   </button>
-                  <button type="submit" v-if="post.id" aria-label="Save changes">
+                  <button type="submit" v-if="post.id" aria-label="Save changes" :class="{'op-5' : loader}" :disabled="loader">
                     Save changes
                   </button>
                   <button type="submit" v-else aria-label="Create new post">
@@ -72,12 +85,15 @@
 
 
 <script setup>
-import { ref, computed, watch, reactive } from 'vue';
+import { ref, watch } from 'vue';
 import CKEditor from '@ckeditor/ckeditor5-vue'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import Swal from 'sweetalert2'
 import { createPost, getSinglePost, updatePost } from '../../api';
+import ContentPlaceholder from './ContentPlaceholder.vue';
+
+const loader = ref(true)
 
 const editor = ClassicEditor
 const ckeditor = CKEditor.component
@@ -118,15 +134,28 @@ import * as Yup from 'yup';
 
 const schema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
-    // body: Yup.string().required('Description is required'),
     userId: Yup.string().required('Author is required'),
 });
 
+const singlePostId = ref('');
+
 watch(() => props.post, async (val) => {
-  if(Object.keys(val).length > 0) {
-    const singlePost = await getSinglePost(val.id)
-    props.post = singlePost
+  if(val && Object.keys(val).length > 0) {
+    singlePostId.value = val.id
   }
+});
+
+const getSinglePostById = async () => {
+  setTimeout( async () => {
+    loader.value = true
+    const singlePost = await getSinglePost(singlePostId.value)
+    props.post = singlePost
+    loader.value = false
+  }, 100);
+}
+
+defineExpose({
+  getSinglePostById,
 });
 
 const onSubmit = async (value) => {
