@@ -298,6 +298,11 @@ const showErrorMessage = (message) => {
   border: 1px solid #6f6b7d;
   box-sizing: border-box;
   color: #6f6b7d;
+  appearance: none;
+  background-image: url("data:image/svg+xml,<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");;
+  background-repeat: no-repeat;
+  background-position: right 0.7rem top 50%;
+  background-size: 0.65rem auto;
 }
 .modal-body label {
   font-size: 12px;

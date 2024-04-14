@@ -46,8 +46,6 @@ it('Updates existing post', () => {
   cy.wait(2000)
   cy.get('.input').clear()
   cy.wait(2000)
-  cy.get('.select').select('')
-  cy.wait(3000)
   cy.get(`[aria-label="Save changes"]`).click()
   cy.wait(2000)
   cy.get('.input').type("lorem ipsum dolor")

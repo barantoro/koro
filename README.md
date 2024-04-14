@@ -59,3 +59,10 @@ npx cypress open
 ## Additional Technologies Used
 
 - **Cypress**: Cypress is integrated into the project for end-to-end testing. It provides a powerful and intuitive testing framework for ensuring the reliability and functionality of the application.
+
+## Development Notes
+
+- **Testing**: This was my first time testing in the frontend. Everything went smoothly until I tried typing something into CKEditor. `cy.type()` simply did not work. Here's a releated topic on [GitHub](https://github.com/cypress-io/cypress/issues/2615/) 
+
+- **Error Handling**: While I have implemented basic error handling in this application, with more time, I would enhance it to provide more informative error messages to the user and implement a more robust error handling strategy.
+

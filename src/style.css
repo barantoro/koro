@@ -23,6 +23,69 @@ html {
   scroll-behavior: smooth;
 }
 
+table {
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+thead {
+  color: var(--header-color);
+  background: var(--white);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+thead th {
+  border-bottom: 1px solid var(--off-white);
+  font-size: 14px;
+}
+
+tbody {
+  font-size: 14px;
+}
+
+td,
+th {
+  border: 1px solid transparent;
+  text-align: left;
+  padding: 0.25rem 1.25rem;
+}
+
+tr:nth-child(even) {
+  background-color: var(--off-white-hover);
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  background-color: var(--white);
+  margin: 0;
+  font: inherit;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid transparent;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+  border: 1px solid var(--header-color);
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--purple);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
 .flex-cs {
   display: flex;
   align-items: center;
@@ -80,11 +143,6 @@ html {
   position: relative;
 }
 
-.search-bar {
-  text-indent: 32px;
-  background: var(--off-white-hover);
-}
-
 .ellipsis-dropdown {
   width: 100%;
   max-width: 30px;
@@ -99,7 +157,7 @@ html {
   box-shadow: 0px 2px 6px 0px rgba(115, 103, 240, 0.48);
   color: var(--white);
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: none;
   padding: 0.5rem 1rem;
   font-size: 14px;
   font-weight: 500;
@@ -119,35 +177,9 @@ html {
   padding: 0.5rem;
   border-radius: 8px;
   color: var(--black);
-  font-weight: 600;
-}
-
-input[type="checkbox"] {
-  appearance: none;
-  background-color: var(--white);
-  margin: 0;
-  font: inherit;
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid transparent;
-  border-radius: 0.15em;
-  transform: translateY(-0.075em);
-  display: grid;
-  place-content: center;
-  border: 1px solid var(--header-color);
-}
-
-input[type="checkbox"]::before {
-  content: "";
-  width: 0.65em;
-  height: 0.65em;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--purple);
-}
-
-input[type="checkbox"]:checked::before {
-  transform: scale(1);
+  font-weight: 400;
+  text-indent: 32px;
+  background: var(--off-white-hover);
 }
 
 .show-more {
@@ -240,6 +272,7 @@ input[type="checkbox"]:checked::before {
 .no-result {
   font-size: 14px;
   text-align: center;
+  padding-top: 60px;
 }
 
 .tooltip {
@@ -315,41 +348,6 @@ input[type="checkbox"]:checked::before {
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
   background: var(--purple);
-}
-
-table {
-  border-spacing: 0;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-thead {
-  color: var(--header-color);
-  background: var(--white);
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-thead th {
-  border-bottom: 1px solid var(--off-white);
-  font-size: 14px;
-}
-
-tbody {
-  font-size: 14px;
-}
-
-td,
-th {
-  border: 1px solid transparent;
-  text-align: left;
-  padding: 0.25rem 1.25rem;
-}
-
-tr:nth-child(even) {
-  background-color: var(--off-white-hover);
 }
 
 .dropdown {
@@ -435,7 +433,7 @@ tr:nth-child(even) {
 /* mobile */
 @media (max-width: 600px) {
   .mobile-reverse {
-    flex-flow: column-reverse;
+    flex-direction: column;
     gap: 20px;
   }
   .btn {
@@ -500,16 +498,15 @@ tr:nth-child(even) {
     display: block;
     font-size: 0.8em;
     text-align: right;
+    font-size: 12px;
   }
 
   table td::before {
-    /*
-    * aria-label has no advantage, it won't be read inside a table
-    content: attr(aria-label);
-    */
     content: attr(data-label);
     float: left;
     font-weight: bold;
+    width: 70px;
+    text-align: left;
   }
 
   table td:last-child {
