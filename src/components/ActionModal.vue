@@ -1,86 +1,75 @@
 <template>
-  <div class="backdrop" v-if="modalActive" @click="$emit('close-modal')" tabindex="-1" aria-labelledby="modalTitle" role="dialog">
-    <Teleport to="body">
-      <Transition name="modal-outer">
-        <div v-show="modalActive" class="modal" role="document" aria-modal="true">
-          <Transition name="modal-inner">
-            <div v-if="modalActive">
-              <div class="modal-header">
-                <div class="flex-cs gap-30">
-                  <h2 v-if="post.id" id="modalTitle">Edit - {{ post.title }}</h2>
-                  <h2 v-else id="modalTitle">Create new post</h2>
-                  <XMarkIcon @click="$emit('close-modal')" class="close-icon" tabindex="0" aria-label="Close modal"/>
-                </div>
+  <Teleport to="body">
+    <Transition name="modal-outer">
+      <div v-show="modalActive" class="modal" role="document" aria-modal="true">
+        <Transition name="modal-inner">
+          <div v-if="modalActive">
+            <div class="modal-header">
+              <div class="flex-cs gap-30">
+                <h2 v-if="post.id" id="modalTitle">Edit - {{ post.title }}</h2>
+                <h2 v-else id="modalTitle">Create new post</h2>
+                <XMarkIcon @click="$emit('close-modal')" class="close-icon" tabindex="0" aria-label="Close modal"/>
               </div>
-              
-              <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }">
-                <div class="modal-body mt-2" v-if="!loader">
-                  <div>
-                    <label for="title">Title *</label>
-                    <Field name="title" type="text" class="input mt-2" v-model="post.title" aria-labelledby="title" :class="{ 'error-input': errors.title }" />
-                    <span class="error-msg">{{errors.title}}</span>
-                  </div>
-
-                  <div class="mt-2">
-                    <label for="authors">Author *</label>
-                    <Field name="userId" as="select" class="select mt-2" :class="{ 'error-input': errors.userId }" v-model="post.userId" aria-labelledby="authors" >
-                        <option value="">Please select</option>
-                        <option 
-                          :value="author.id" 
-                          v-for="author in authors" 
-                          :key="author.id"
-                        >
-                          {{ author.name }}
-                        </option>
-                    </Field>
-                    <div class="error-msg">{{errors.userId}}</div>
-                  </div>
-
-                  <div class="mt-4">
-                    <label for="description">Description</label>
-                    <div class="mt-2 br-8">
-                      <ckeditor :editor="editor" v-model="post.body" :config="editorConfig" aria-labelledby="postBody"></ckeditor>
-                    </div>
-                  </div>  
-                </div>
-
-                <div class="modal-body mt-2" v-else>
-                  <div>
-                    <label for="title">Title *</label>
-                    <ContentPlaceholder class="mt-2" :textLine="1" />
-                  </div>
-
-                  <div class="mt-2">
-                    <label for="authors">Author *</label>
-                    <ContentPlaceholder class="mt-2" :textLine="1" />
-                  </div>
-
-                  <div class="mt-4">
-                    <label for="description">Description</label>
-                    <div class="mt-2 br-8">
-                      <ContentPlaceholder class="mt-2" :textLine="10" />
-                    </div>
-                  </div>  
-                </div>
-
-                <div class="modal-footer mt-4">
-                  <button @click="$emit('close-modal')" aria-label="Close modal">
-                    Close
-                  </button>
-                  <button type="submit" v-if="post.id" aria-label="Save changes" :class="{'op-5' : loader}" :disabled="loader">
-                    Save changes
-                  </button>
-                  <button type="submit" v-else aria-label="Create new post">
-                    Create new post
-                  </button>
-                </div>
-              </Form>
             </div>
-          </Transition>
-        </div>
-      </Transition>
-    </Teleport>
-  </div>
+            
+            <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }">
+              <div class="modal-body mt-2" v-if="!loader">
+                <div>
+                  <label for="title">Title *</label>
+                  <Field name="title" type="text" class="input mt-2" v-model="post.title" aria-labelledby="title" :class="{ 'error-input': errors.title }" />
+                  <span class="error-msg">{{errors.title}}</span>
+                </div>
+                <div class="mt-2">
+                  <label for="authors">Author *</label>
+                  <Field name="userId" as="select" class="select mt-2" :class="{ 'error-input': errors.userId }" v-model="post.userId" aria-labelledby="authors" >
+                      <option value="">Please select</option>
+                      <option :value="author.id" v-for="author in authors" :key="author.id">
+                        {{ author.name }}
+                      </option>
+                  </Field>
+                  <div class="error-msg mt-1">{{errors.userId}}</div>
+                </div>
+                <div class="mt-4">
+                  <label for="description">Description</label>
+                  <div class="mt-2 br-8">
+                    <ckeditor :editor="editor" v-model="post.body" :config="editorConfig" aria-labelledby="postBody"></ckeditor>
+                  </div>
+                </div>  
+              </div>
+              <div class="modal-body mt-2" v-else>
+                <div>
+                  <label for="title">Title *</label>
+                  <ContentPlaceholder class="mt-2" :textLine="1" />
+                </div>
+                <div class="mt-2">
+                  <label for="authors">Author *</label>
+                  <ContentPlaceholder class="mt-2" :textLine="1" />
+                </div>
+                <div class="mt-4">
+                  <label for="description">Description</label>
+                  <div class="mt-2 br-8">
+                    <ContentPlaceholder class="mt-2" :textLine="10" />
+                  </div>
+                </div>  
+              </div>
+              <div class="modal-footer mt-4">
+                <button @click="$emit('close-modal')" aria-label="Close modal">
+                  Close
+                </button>
+                <button type="submit" v-if="post.id" aria-label="Save changes" :class="{'op-5' : loader}" :disabled="loader">
+                  Save changes
+                </button>
+                <button type="submit" v-else aria-label="Create new post">
+                  Create new post
+                </button>
+              </div>
+            </Form>
+          </div>
+        </Transition>
+      </div>
+    </Transition>
+  </Teleport>
+  <div class="backdrop" v-if="modalActive" @click="$emit('close-modal')" tabindex="-1" aria-labelledby="modalTitle" role="dialog"> </div>
 </template>
 
 
@@ -93,7 +82,7 @@ import Swal from 'sweetalert2'
 import { createPost, getSinglePost, updatePost } from '../../api';
 import ContentPlaceholder from './ContentPlaceholder.vue';
 
-const loader = ref(true)
+const loader = ref(false)
 
 const editor = ClassicEditor
 const ckeditor = CKEditor.component
@@ -279,28 +268,36 @@ const showErrorMessage = (message) => {
   z-index: 999;
 }
 .modal-header {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #f4f4f5;
 }
 .modal-header h2 {
   font-size: 20px;
+  font-weight: 500;
 }
 .close-icon {
   width: 100%;
   max-width: 24px;
+  transition: .5s;
+  cursor: pointer;
+}
+.close-icon:hover {
+  color: #1c1c1c;
+  transition: .5s;
 }
 .input {
   width: 100%;
   padding: .5rem;
   border-radius: 8px;
-  border: 1px solid #000;
+  border: 1px solid #6f6b7d;
   box-sizing: border-box;
 }
 .select {
   width: 100%;
   padding: .5rem;
   border-radius: 8px;
-  border: 1px solid #000;
+  border: 1px solid #6f6b7d;
   box-sizing: border-box;
+  color: #6f6b7d;
 }
 .modal-body label {
   font-size: 12px;
@@ -321,24 +318,24 @@ const showErrorMessage = (message) => {
   transition: .5s;
 }
 .modal-footer button:first-child {
-  border: 1px solid #49c5b6;
-  color: #49c5b6;;
+  border: 1px solid #6f6b7d;
+  color: #6f6b7d;;
   background: #fff;
 }
 .modal-footer button:first-child:hover {
-  border: 1px solid #2e9f91;
-  color: #2e9f91;;
+  border: 1px solid #1c1c1c;
+  color: #1c1c1c;;
   background: #fff;
   transition: .5s;
 }
 .modal-footer button:nth-child(2) {
-  border: 1px solid #DF6C4F;
+  border: 1px solid transparent;
   color: #fff;;
-  background: #DF6C4F;
+  background: #7367f0;
+  box-shadow: 0px 2px 6px 0px rgba(115,103,240,.48);
 }
 .modal-footer button:nth-child(2):hover {
-  border: 1px solid #ce583b;
-  background: #ce583b;
+  box-shadow: 0px 6px 12px 0px rgba(115,103,240,.48);
   transition: .5s;
 }
 .error-msg {
@@ -353,5 +350,11 @@ const showErrorMessage = (message) => {
   border: 1px solid #FF0000;
   /* color: #FF0000; */
   transition: 1s;
+}
+
+@media (max-width: 600px) {
+  .modal {
+    max-width: 80% !important;
+  }
 }
 </style>

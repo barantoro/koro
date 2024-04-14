@@ -2,11 +2,13 @@
 
 ## Overview
 
-A post management application with Vue.js 3 composition API and Vite. This application allows users to read, create, delete, and update posts using the JSON placeholder API.
+A post management application with Vue.js 3 composition API and Vite. This application allows users to read, create, delete, and update posts using the JSON placeholder API. Demo hosted at [Github Pages](https://barantoro.github.io/koro/)
 
 **Node Version:** v21.5.9
 
 **NPM Version:** 10.2.4
+
+
 
 # Vue 3 + Vite
 

@@ -1,11 +1,10 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { MagnifyingGlassIcon, EllipsisVerticalIcon } from '@heroicons/vue/24/outline';
+import { MagnifyingGlassIcon, EllipsisVerticalIcon, TrashIcon, PencilIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon} from '@heroicons/vue/24/outline';
 import ActionModal from './components/ActionModal.vue';
 import ContentPlaceholder from './components/ContentPlaceholder.vue';
 import Swal from 'sweetalert2';
 import { fetchPosts, fetchUsers, deletePost } from '../api';
-
 
 const posts = ref([]);
 const selectedPostForUpdate = ref({})
@@ -75,7 +74,7 @@ const callChildMethod = () => {
 
 const findAuthor = (id) => {
     const user = users.value.find(user => user.id === id);
-    return user ? user.name : id;
+    return user ? user : id;
 };
 
 const toggleDropdown = (postId) => {
@@ -113,7 +112,7 @@ const filteredList = computed(() => {
 
 <template>
     <div class="container mt-5">
-        <div class="flex-cs w-100 gap-30">
+        <div class="flex-cs w-100 gap-30 mobile-reverse">
             <div class="w-100 relative">
                 <MagnifyingGlassIcon class="magnifying-glass" />
                 <input type="text" placeholder="Search by title or description" class="w-100 search-bar" v-model="search" aria-label="Search input"> 
@@ -141,16 +140,16 @@ const filteredList = computed(() => {
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="filteredList.length>0">
                     <tr v-for="post in filteredList" :key="post.id">
                         <td> 
                             <input type="checkbox" :checked="selectedPosts.includes(post)" @change="togglePostSelection(post)" aria-label="Select post checkbox">
                         </td>
-                        <td class="semi-bold maxw-250">
+                        <td class="maxw-250" data-label="Title">
                             {{ post.title }}
                         </td>
-                        <td class="maxw-365">
-                            <div>
+                        <td class="maxw-365" data-label="Description">
+                            <div class="description-wrapper">
                                 <span v-if="!post.showFullBody">{{ truncatePostBody(post.body) }}</span>
                                 <span v-else>{{ post.body }}</span>
                                 <span class="show-more"  @click="toggleBodyDisplay(post)" role="button" tabindex="0" aria-expanded="post.showFullBody ? 'true' : 'false'" aria-label="Toggle post body display">
@@ -158,18 +157,36 @@ const filteredList = computed(() => {
                                 </span>
                             </div>
                         </td>
-                        <td class="semi-bold">
+                        <td data-label="Author">
                             <div class="author-dropdown flex-cs">
-                                <span>{{ findAuthor(post.userId) }}</span>
+                                <div class="author-img-wrapper tooltip">
+                                    <span class="tooltiptext">
+                                        <div class="author-info-wrapper">
+                                            <div class="author-info">
+                                                <EnvelopeIcon class="ico" /> <span>{{ findAuthor(post.userId).email }}</span>
+                                            </div>
+                                            <div class="author-info">
+                                                <PhoneIcon class="ico" /> <span>{{ findAuthor(post.userId).phone }}</span>
+                                            </div>
+                                            <div class="author-info">
+                                                <BuildingOffice2Icon class="ico" /> <span>{{ findAuthor(post.userId).company.name }}</span>
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <img :src='`https://i.pravatar.cc/150?img=${post.userId}`' >
+                                    <span>{{ findAuthor(post.userId).name }}</span>
+                                </div>
                                 <button @click="toggleDropdown(post.id)" aria-label="Open dropdown menu">
                                     <EllipsisVerticalIcon class="ellipsis-dropdown" />
                                 </button>
                                 <div 
                                     v-if="activeDropdown === post.id" class="dropdown-content" aria-label="Dropdown menu">
                                     <a href="#" @click="toggleModal(post),callChildMethod()" aria-label="Edit post link">
+                                        <PencilIcon class="dropdown-icon" />
                                         Edit
                                     </a>
                                     <a href="#" @click="confirmDeletePost(post.id)" aria-label="Delete post link">
+                                        <TrashIcon class="dropdown-icon" />
                                         Delete
                                     </a>
                                 </div>
@@ -179,6 +196,7 @@ const filteredList = computed(() => {
                 </tbody>
             </table>
             <ContentPlaceholder :textLine="24" v-else />
+            <p class="no-result" v-if="filteredList.length === 0">Houston, we have a problem... No results found! 🚀🔍</p>
         </div>
       <!-- {{ selectedPosts }} -->        
       <ActionModal
