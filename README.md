@@ -1,46 +1,64 @@
 # KoRo - Frontend Assessment Task
 
-## Overview
+[![Product Screen Shot][product-screenshot]](https://github.com/barantoro/koro.git)
+
+[product-screenshot]: ./app-screenshot.png
 
 A post management application with Vue.js 3 composition API and Vite. This application allows users to read, create, delete, and update posts using the JSON placeholder API. Demo hosted at [Github Pages](https://barantoro.github.io/koro/)
 
-**Node Version:** v21.5.9
+## Vue 3 + Vite
 
-**NPM Version:** 10.2.4
-
-
-
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+The application uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
 
-## Project setup
+## Prerequisites
 
-```
-npm install
-```
+* npm
 
-### Compiles and hot-reloads for development
+  ```sh
+  npm install npm@latest -g
+  ```
 
-```
-npm run dev
-```
+## Installation
 
-### Compiles and minifies for production
+1. Clone the repo
 
-```
-npm run build
-```
+   ```sh
+   git clone https://github.com/barantoro/koro.git
+   ```
+2. Install NPM packages
 
-### E2E test
+   ```sh
+   npm install
+   ```
 
-```
-npx cypress open
-```
+## Run the Project
+
+1. Compiles and hot-reloads for development
+
+   ```sh
+   npm run dev
+   ```
+2. Compiles and minifies for production
+
+   ```sh
+   npm npm run build
+   ```
+## Other Commands
+
+1. Testing
+
+   ```sh
+   npx cypress open
+   ```
+2. New deployment to Github Pages
+
+   ```sh
+   npm run deploy
+   ```
 
 ## Design Decisions
 
